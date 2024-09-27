@@ -1,0 +1,19 @@
+.tap_button{
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    bottom:20%;
+    margin: auto;
+    background-color: rgb(255, 217, 0);
+    padding: 20px;
+    border-radius: 50%;
+    border: 10px solid rgb(0, 153, 255);
+}
+.tap_button:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+.tap_button img{
+    width: 100%;
+}
+
