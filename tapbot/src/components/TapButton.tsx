@@ -1,7 +1,7 @@
 import axios from 'axios'
 import '../css/TapButton.css'
 import '../css/Coins.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 function TapButton (){
 const [coins ,setCoins]=useState<number>(0)
@@ -27,6 +27,35 @@ const handleClick = async () => {
     
   };
 
+  const buttonRef=useRef<HTMLDivElement| any>(null);
+  useEffect(()=>{
+    const applyContainerProp =()=>{
+        buttonRef.current?.classList.add("effect-container")
+    }
+
+    const applyStyle =(e:any) =>{
+        const {offsetX,offsetY}=e
+        const {style} = buttonRef.current;
+        const sizeOffset = 50;
+
+        style.setProperty("--effect-top",`${offsetY-sizeOffset}px`);
+        style.setProperty("--effect-left",`${offsetX-sizeOffset}px`)
+    }
+
+    const onClick=(e:any)=>{
+        buttonRef.current?.classList.remove("active");
+        applyStyle(e)
+        buttonRef.current?.classList.add("active")
+        
+    }
+
+    applyContainerProp();
+    buttonRef.current?.addEventListener('mouseup',onClick)
+    const cleanupRef=buttonRef.current;
+    return ()=>{
+        cleanupRef?.removeEventListener("mouseup",onClick)
+    }
+  })
 
     return(
         <>
@@ -34,8 +63,8 @@ const handleClick = async () => {
             {coins}
         </div>
         <hr style={{width:"100%",marginTop:"20px"}}></hr>
-        <div onClick={()=>handleClick()} className="tap_button">
-            <img src="./tap.svg"/>
+        <div onClick={()=>handleClick()} className="tap_button" ref={buttonRef}>
+           <img src="./tap.svg"/>
         </div>
         </>
     )
